@@ -25,7 +25,7 @@ const Navbar = () => {
             <button
               type="button"
               id="mobile-dropdown-button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-rustBrown hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-green-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -63,7 +63,7 @@ const Navbar = () => {
                 <Link
                   href="/"
                   className={`${
-                    pathname === "/" ? "bg-rustBrown" : ""
+                    pathname === "/" ? "bg-green-800" : ""
                   } text-white  hover:text-white rounded-md px-3 py-2`}
                 >
                   Home
@@ -71,7 +71,7 @@ const Navbar = () => {
                 <Link
                   href="/properties"
                   className={`${
-                    pathname === "/properties" ? "bg-rustBrown" : ""
+                    pathname === "/properties" ? "bg-green-800" : ""
                   } text-white  hover:text-white rounded-md px-3 py-2`}
                 >
                   Properties
@@ -80,7 +80,7 @@ const Navbar = () => {
                   <Link
                     href="/properties/add"
                     className={`${
-                      pathname === "/properties/add" ? "bg-rustBrown" : ""
+                      pathname === "/properties/add" ? "bg-green-800" : ""
                     } text-white  hover:text-white rounded-md px-3 py-2`}
                   >
                     Add Property
@@ -98,7 +98,7 @@ const Navbar = () => {
               <Link href="/messages" className="relative group">
                 <button
                   type="button"
-                  className="relative rounded-full bg-mediumBrown hover:bg-rustBrown p-1 text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative rounded-full bg-green-700 hover:bg-green-800 p-1 text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">View notifications</span>
@@ -136,7 +136,7 @@ const Navbar = () => {
                   >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
-                    <IoPersonCircleOutline className="text-white w-8 h-8 bg-mediumBrown rounded-full hover:bg-rustBrown" />
+                    <IoPersonCircleOutline className="text-white w-8 h-8 bg-green-700 rounded-full hover:bg-green-800" />
                   </button>
                 </div>
 
@@ -183,7 +183,7 @@ const Navbar = () => {
           ) : (
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
-                <button className="flex items-center text-white bg-mediumBrown hover:bg-rustBrown hover:text-white rounded-md px-3 py-2">
+                <button className="flex items-center text-white bg-green-700 hover:bg-green-800 hover:text-white rounded-md px-3 py-2">
                   <FaGoogle className="text-white mr-2" />
                   <span>Login or Register</span>
                 </button>
@@ -200,7 +200,7 @@ const Navbar = () => {
             <Link
               href="/"
               className={`${
-                pathname === "/" ? "bg-rustBrown" : ""
+                pathname === "/" ? "bg-green-800" : ""
               } text-white  block text-base font-medium hover:text-white rounded-md px-3 py-2`}
             >
               Home
@@ -208,7 +208,7 @@ const Navbar = () => {
             <Link
               href="/properties"
               className={`${
-                pathname === "/properties" ? "bg-rustBrown" : ""
+                pathname === "/properties" ? "bg-green-800" : ""
               } text-white block text-base font-medium  hover:text-white rounded-md px-3 py-2`}
             >
               Properties
@@ -217,14 +217,14 @@ const Navbar = () => {
               <Link
                 href="/properties/add"
                 className={`${
-                  pathname === "/properties/add" ? "bg-rustBrown" : ""
+                  pathname === "/properties/add" ? "bg-green-800" : ""
                 } text-white block text-base font-medium hover:text-white rounded-md px-3 py-2`}
               >
                 Add Property
               </Link>
             )}
             {!isLoggedIn && (
-              <button className="flex items-center text-white bg-mediumBrown hover:bg-rustBrown hover:text-white rounded-md px-3 py-2 my-4">
+              <button className="flex items-center text-white bg-green-700 hover:bg-green-800 hover:text-white rounded-md px-3 py-2 my-4">
                 <FaGoogle className="text-white mr-2" />
                 <span>Login or Register</span>
               </button>

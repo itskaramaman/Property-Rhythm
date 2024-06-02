@@ -40,7 +40,14 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
   };
   return (
     <div className="rounded-xl shadow-md relative">
-      <Image src="" alt="" className="w-full h-auto rounded-t-xl" />
+      <Image
+        src={`/images/properties/${property.images[0]}`}
+        alt=""
+        height={0}
+        width={0}
+        sizes="100vw"
+        className="w-full h-auto rounded-t-xl"
+      />
       <div className="p-4">
         <div className="text-left md:text-center lg:text-left mb-6">
           <div className="text-gray-600">{property.type}</div>
@@ -97,7 +104,7 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
             </span>
           </div>
           <Link
-            href={`/property/${property._id}`}
+            href={`/properties/${property._id}`}
             className="h-[36px] bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-lg text-center text-sm"
           >
             Details

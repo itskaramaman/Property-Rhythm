@@ -13,6 +13,12 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
+      gridTemplateColumns: {
+        "70/30": "70% 28%",
+      },
       colors: {
         sageGreen: "#9DC183",
         terracotta: "#E2725B",

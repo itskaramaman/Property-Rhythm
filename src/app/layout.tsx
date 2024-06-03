@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import Navbar from "@/app/components/Navbar";
+import AuthProvider from "./components/AuthProvider";
 
 export const metadata = {
   title: "Property Rhythm | Find the perfect rentals",
@@ -10,12 +11,14 @@ export const metadata = {
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        <div>{children}</div>
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body>
+          <Navbar />
+          <div>{children}</div>
+        </body>
+      </html>
+    </AuthProvider>
   );
 };
 

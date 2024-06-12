@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/app/config/database";
 import Property from "@/app/models/Property";
+import { getSessionUser } from "@/app/utils/getSessionUser";
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,18 +26,28 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+
+    // 1. Get session user
+    const sessionUser = await getSessionUser();
+
+    if (!sessionUser || !sessionUser.userId) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // 2. Get Form data
     const formData = await request.formData();
 
     // Get rates of property
-    const rates = formData.get("rates");
+    const rates = formData.get("rates") as string;
     const { weekly, nightly, monthly } = JSON.parse(rates);
 
     // Get seller info of property
-    const seller_info = formData.get("seller_info");
+    const seller_info = formData.get("seller_info") as string;
     const { name, email, phone } = JSON.parse(seller_info);
 
     // Get location of property
-    const location = formData.get("location");
+    const location = formData.get("location") as string;
     const { street, city, state, zipcode } = JSON.parse(location);
 
     // Get amenities and images
@@ -47,9 +58,9 @@ export async function POST(request: NextRequest) {
 
     // Create propertyData object for database
     const propertyData = {
-      type: formData.get("type"),
-      name: formData.get("name"),
-      description: formData.get("description"),
+      type: JSON.parse(formData.get("type") as string),
+      name: JSON.parse(formData.get("name") as string),
+      description: JSON.parse(formData.get("description") as string),
       location: {
         street,
         city,
@@ -70,11 +81,15 @@ export async function POST(request: NextRequest) {
         email,
         phone,
       },
-      images,
+      // images,
+      owner: sessionUser.userId,
     };
 
-    return NextResponse.json(propertyData, { status: 201 });
+    const newProperty = new Property(propertyData);
+    await newProperty.save();
+
+    return NextResponse.json({ propertyId: newProperty._id }, { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   type: z.string(),
@@ -58,6 +59,8 @@ const PropertyAddForm = () => {
     formState: { errors },
   } = useForm<TFormSchema>({ resolver: zodResolver(formSchema) });
 
+  const router = useRouter();
+
   const handleFormSubmit = async (data: TFormSchema) => {
     console.log(data);
     const formData = new FormData();
@@ -67,9 +70,12 @@ const PropertyAddForm = () => {
     }
 
     const response = await axios.post("/api/properties/", formData);
-    console.log(response);
 
-    console.log("form submit working");
+    if (response.status === 201) {
+      router.push(`/properties/${response.data?.propertyId}`);
+    } else {
+      console.log("Couldn't create property");
+    }
   };
 
   console.log(errors);

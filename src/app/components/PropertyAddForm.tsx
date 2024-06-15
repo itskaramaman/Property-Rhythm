@@ -5,6 +5,8 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { ThreeDots } from "react-loader-spinner";
+import { useState } from "react";
 
 const formSchema = z.object({
   type: z.string(),
@@ -58,10 +60,13 @@ const PropertyAddForm = () => {
     setValue,
   } = useForm<TFormSchema>({ resolver: zodResolver(formSchema) });
 
+  const [addingProperty, setAddingProperty] = useState(false);
+
   const router = useRouter();
 
   const handleFormSubmit = async (data: TFormSchema) => {
     try {
+      setAddingProperty(true);
       const formData = new FormData();
 
       // Iterate over form data and append each pair
@@ -83,6 +88,7 @@ const PropertyAddForm = () => {
         },
       });
 
+      setAddingProperty(false);
       if (response.status === 201) {
         router.push(`/properties/${response.data?.propertyId}`);
       } else {
@@ -508,10 +514,23 @@ const PropertyAddForm = () => {
 
       <div>
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+          className="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex justify-center items-center"
           type="submit"
         >
-          Add Property
+          {addingProperty ? (
+            <ThreeDots
+              visible={true}
+              height="20"
+              width="20"
+              color="white"
+              radius="9"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            "Add Property"
+          )}
         </button>
       </div>
     </form>

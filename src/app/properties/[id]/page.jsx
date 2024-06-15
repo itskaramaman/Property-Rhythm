@@ -7,6 +7,7 @@ import { fetchProperty } from "@/app/utils/request";
 import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
 import PropertyDetails from "@/app/components/PropertyDetails";
 import { FaArrowLeft } from "react-icons/fa";
+import PropertyImages from "@/app/components/PropertyImages";
 
 const PropertyPage = () => {
   const { id } = useParams();
@@ -143,6 +144,7 @@ const PropertyPage = () => {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>

@@ -41,7 +41,7 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
   return (
     <div className="rounded-xl shadow-md relative">
       <Image
-        src={`/images/properties/${property.images[0]}`}
+        src={property.images[0]}
         alt=""
         height={0}
         width={0}
@@ -76,19 +76,22 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
         <div className="flex justify-center gap-4 text-green-900 text-sm mb-4">
           {property.rates.nightly && (
             <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill> Nightly
+              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
+              {property.rates.nightly} Nightly
             </p>
           )}
 
           {property.rates.weekly && (
             <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill> Weekly
+              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
+              {property.rates.weekly} Weekly
             </p>
           )}
 
           {property.rates.monthly && (
             <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill> Monthly
+              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
+              {property.rates.monthly} Monthly
             </p>
           )}
         </div>

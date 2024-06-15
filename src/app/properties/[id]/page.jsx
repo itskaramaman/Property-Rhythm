@@ -74,7 +74,7 @@ const PropertyPage = () => {
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          for="name"
+                          htmlFor="name"
                         >
                           Name:
                         </label>
@@ -89,7 +89,7 @@ const PropertyPage = () => {
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          for="email"
+                          htmlFor="email"
                         >
                           Email:
                         </label>
@@ -104,7 +104,7 @@ const PropertyPage = () => {
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          for="phone"
+                          htmlFor="phone"
                         >
                           Phone:
                         </label>
@@ -118,7 +118,7 @@ const PropertyPage = () => {
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          for="message"
+                          htmlFor="message"
                         >
                           Message:
                         </label>

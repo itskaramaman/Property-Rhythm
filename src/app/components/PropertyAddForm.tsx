@@ -45,9 +45,7 @@ const formSchema = z.object({
     ),
   }),
   amenities: z.array(z.string()),
-  images: z.unknown().transform((value) => {
-    return value as FileList;
-  }),
+  images: z.array(z.unknown()),
 });
 
 type TFormSchema = z.infer<typeof formSchema>;
@@ -57,28 +55,43 @@ const PropertyAddForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<TFormSchema>({ resolver: zodResolver(formSchema) });
 
   const router = useRouter();
 
   const handleFormSubmit = async (data: TFormSchema) => {
-    console.log(data);
-    const formData = new FormData();
-    for (let pair of Object.entries(data)) {
-      console.log(pair[0], pair[1]);
-      formData.append(pair[0], JSON.stringify(pair[1]));
-    }
+    try {
+      const formData = new FormData();
 
-    const response = await axios.post("/api/properties/", formData);
+      // Iterate over form data and append each pair
+      for (let pair of Object.entries(data)) {
+        // If pair is images, handle appending files
+        if (pair[0] === "images") {
+          for (let i = 0; i < pair[1].length; i++) {
+            formData.append("images", pair[1][i]); // Append each file individually
+          }
+        } else {
+          formData.append(pair[0], JSON.stringify(pair[1])); // Append other fields as strings
+        }
+      }
 
-    if (response.status === 201) {
-      router.push(`/properties/${response.data?.propertyId}`);
-    } else {
-      console.log("Couldn't create property");
+      // Submit formData to backend API
+      const response = await axios.post("/api/properties", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 201) {
+        router.push(`/properties/${response.data?.propertyId}`);
+      } else {
+        console.log("Failed to create property");
+      }
+    } catch (error) {
+      console.error("Error creating property:", error);
     }
   };
-
-  console.log(errors);
 
   return (
     <form
@@ -479,12 +492,17 @@ const PropertyAddForm = () => {
           Images (Select up to 4 images)
         </label>
         <input
-          {...register("images")}
           type="file"
           className="border rounded w-full py-2 px-3"
           accept="image/*"
           multiple={true}
           required={true}
+          onChange={(e) => {
+            const files = e.target.files;
+            if (files) {
+              setValue("images", Array.from(files)); // Use setValue to update "images" as an array of File objects
+            }
+          }}
         />
       </div>
 

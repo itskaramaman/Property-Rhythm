@@ -9,7 +9,6 @@ const HomePage = () => {
       <Hero />
       <InforBoxes />
       <HomeProperties />
-      <Footer />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import z from "zod";
+import z, { any } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";

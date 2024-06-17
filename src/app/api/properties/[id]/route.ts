@@ -62,3 +62,46 @@ export async function DELETE(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const session = await getSessionUser();
+    const sessionUserId = session?.userId;
+
+    if (!sessionUserId) {
+      return NextResponse.json(
+        { message: "User not logged in" },
+        { status: 401 }
+      );
+    }
+
+    const reqBody = await request.json();
+
+    const property = await Property.findById(reqBody.id);
+    if (!property) {
+      return NextResponse.json(
+        { message: "Property not found" },
+        { status: 404 }
+      );
+    }
+
+    if (property.owner.toString() !== sessionUserId) {
+      return NextResponse.json(
+        { message: "Property owner and current user are different" },
+        { status: 400 }
+      );
+    }
+
+    const updatedProperty = await Property.findByIdAndUpdate(
+      reqBody.id,
+      reqBody,
+      { new: true }
+    );
+
+    return NextResponse.json({ updatedProperty }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

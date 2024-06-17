@@ -4,14 +4,15 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { propertyFormSchema } from "../utils/schemas";
+import { toast } from "react-toastify";
 
 type TFormSchema = z.infer<typeof propertyFormSchema>;
 
-const PropertyAddForm = () => {
+const PropertyEditForm = () => {
   const {
     register,
     handleSubmit,
@@ -22,48 +23,50 @@ const PropertyAddForm = () => {
   const [addingProperty, setAddingProperty] = useState(false);
 
   const router = useRouter();
+  const { id } = useParams();
 
   const handleFormSubmit = async (data: TFormSchema) => {
     try {
       setAddingProperty(true);
-      const formData = new FormData();
 
-      // Iterate over form data and append each pair
-      for (let pair of Object.entries(data)) {
-        // If pair is images, handle appending files
-        if (pair[0] === "images") {
-          for (let i = 0; i < pair[1].length; i++) {
-            formData.append("images", pair[1][i]); // Append each file individually
-          }
-        } else {
-          formData.append(pair[0], JSON.stringify(pair[1])); // Append other fields as strings
-        }
-      }
-
-      // Submit formData to backend API
-      const response = await axios.post("/api/properties", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await axios.put(`/api/properties/${id}`, {
+        ...data,
+        id,
       });
 
       setAddingProperty(false);
-      if (response.status === 201) {
-        router.push(`/properties/${response.data?.propertyId}`);
+      toast.success("Property Updated successfully");
+      if (response.status === 200) {
+        router.push(`/properties/${response.data?.updatedProperty?._id}`);
       } else {
-        console.log("Failed to create property");
+        toast.error("Failed to update property");
       }
     } catch (error) {
       console.error("Error creating property:", error);
     }
   };
 
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const response = await axios.get(`/api/properties/${id}`);
+        if (response.status === 200) {
+          const { property } = response.data;
+          for (const key in property) {
+            setValue(key, property[key]);
+          }
+        }
+      } catch (error) {
+        toast.error("Could not fetch property");
+      }
+    };
+
+    fetchProperty();
+  }, [id, setValue]);
+
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      encType="multipart/form-data"
-    >
-      <h2 className="text-3xl text-center font-semibold mb-6">Add Property</h2>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
 
       <div className="mb-4">
         <label htmlFor="type" className="block text-gray-700 font-bold mb-2">
@@ -452,25 +455,6 @@ const PropertyAddForm = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-          Images (Select up to 4 images)
-        </label>
-        <input
-          type="file"
-          className="border rounded w-full py-2 px-3"
-          accept="image/*"
-          multiple={true}
-          required={true}
-          onChange={(e) => {
-            const files = e.target.files;
-            if (files) {
-              setValue("images", Array.from(files)); // Use setValue to update "images" as an array of File objects
-            }
-          }}
-        />
-      </div>
-
       <div>
         <button
           className="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex justify-center items-center"
@@ -488,7 +472,7 @@ const PropertyAddForm = () => {
               wrapperClass=""
             />
           ) : (
-            "Add Property"
+            "Edit Property"
           )}
         </button>
       </div>
@@ -496,4 +480,4 @@ const PropertyAddForm = () => {
   );
 };
 
-export default PropertyAddForm;
+export default PropertyEditForm;

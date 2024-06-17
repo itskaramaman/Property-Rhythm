@@ -6,6 +6,7 @@ import profileDefault from "@/app/assets/images/profile.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PropertyInterface } from "../utils/interfaces";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
   const { data: session } = useSession();
@@ -36,8 +37,10 @@ const ProfilePage = () => {
         );
         setProperties(updatedProperties);
       }
+      toast.success("Property Deleted");
     } catch (error) {
       console.log("Could not delete property");
+      toast.error("Failed to delete property");
     }
   };
 

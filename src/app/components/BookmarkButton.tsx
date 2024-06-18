@@ -3,10 +3,11 @@ import { PropertyInterface } from "../utils/interfaces";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
   const [savingBookmark, setSavingBookmark] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
   const onBookmarkClick = async () => {
     try {
       setSavingBookmark(true);
@@ -15,7 +16,8 @@ const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
       );
 
       if (response.status === 201) {
-        toast.success("Bookmark Saved!");
+        setBookmarked(!bookmarked);
+        toast.success(response.data?.message);
       }
       setSavingBookmark(false);
     } catch (error: any) {
@@ -24,10 +26,26 @@ const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchBookmarked = async () => {
+      const response = await axios.get(
+        `/api/properties/bookmarks/${property._id}`
+      );
+      console.log(response);
+      response.data?.bookmarked ? setBookmarked(true) : setBookmarked(false);
+    };
+
+    fetchBookmarked();
+  }, [property._id]);
+
   return (
     <button
       onClick={onBookmarkClick}
-      className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
+      className={` ${
+        bookmarked
+          ? "bg-green-600 hover:bg-green-700"
+          : "bg-blue-500 hover:bg-blue-600"
+      } text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center`}
     >
       {savingBookmark ? (
         <ThreeDots
@@ -42,7 +60,8 @@ const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
         />
       ) : (
         <>
-          <FaBookmark className="mr-2" /> Bookmark Property
+          <FaBookmark className="mr-2" />{" "}
+          {bookmarked ? "Bookmarked" : "Bookmark Property"}
         </>
       )}
     </button>

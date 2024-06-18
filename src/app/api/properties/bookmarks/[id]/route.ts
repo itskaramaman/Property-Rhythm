@@ -33,15 +33,17 @@ export async function POST(
       );
     }
 
+    let message = "Bookmark saved successfully";
     if (!user.bookmarks.includes(id)) {
       user.bookmarks.push(id);
-      await user.save();
+    } else {
+      user.bookmarks.pull(id);
+      message = "Bookmark removed succesfully";
     }
 
-    return NextResponse.json(
-      { message: "Bookmark saved successfully" },
-      { status: 201 }
-    );
+    await user.save();
+
+    return NextResponse.json({ message }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -76,6 +78,34 @@ export async function DELETE(
       { message: "Bookmark removed successfully" },
       { status: 200 }
     );
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await connectDB();
+
+    const { id } = params;
+
+    const session = await getSessionUser();
+    const userId = session?.userId;
+    if (!session || !userId) {
+      return NextResponse.json(
+        { message: "User not logged in" },
+        { status: 401 }
+      );
+    }
+
+    const user = await User.findById(userId);
+
+    let bookmarked = user.bookmarks.includes(id);
+
+    return NextResponse.json({ bookmarked }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

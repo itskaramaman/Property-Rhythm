@@ -1,3 +1,5 @@
+"use client";
+
 import { FaBookmark } from "react-icons/fa";
 import { PropertyInterface } from "../utils/interfaces";
 import axios from "axios";
@@ -31,7 +33,6 @@ const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
       const response = await axios.get(
         `/api/properties/bookmarks/${property._id}`
       );
-      console.log(response);
       response.data?.bookmarked ? setBookmarked(true) : setBookmarked(false);
     };
 

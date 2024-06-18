@@ -3,7 +3,6 @@ import connectDB from "@/app/config/database";
 import Property from "@/app/models/Property";
 import { getSessionUser } from "@/app/utils/getSessionUser";
 import cloudinary from "@/app/config/cloudinary";
-import formidable from "formidable";
 
 export async function GET(request: NextRequest) {
   try {

@@ -15,9 +15,9 @@ export interface PropertyInterface {
   square_feet: number;
   amenities: string[];
   rates: {
-    nightly: number;
-    weekly: number;
-    monthly: number;
+    nightly?: number;
+    weekly?: number;
+    monthly?: number;
   };
   seller_info: {
     name: string;
@@ -26,4 +26,17 @@ export interface PropertyInterface {
   };
   images: string[];
   is_featured: boolean;
+}
+
+export interface MessageInterface {
+  _id: string;
+  sender: string;
+  recipient: string;
+  property: PropertyInterface;
+  name: string;
+  email: string;
+  phone?: string;
+  body?: string;
+  read: boolean;
+  createdAt: string;
 }

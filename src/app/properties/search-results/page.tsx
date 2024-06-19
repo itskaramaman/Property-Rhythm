@@ -4,8 +4,10 @@ import { PropertyInterface } from "@/app/utils/interfaces";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PropertyCard from "@/app/components/PropertyCard";
+import Link from "next/link";
 import axios from "axios";
 import PropertySearchForm from "@/app/components/PropertySearchForm";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 const SearchResults = () => {
   const searchParams = useSearchParams();
@@ -32,10 +34,18 @@ const SearchResults = () => {
   return (
     <>
       <div className="bg-sageGreen p-5 rounded-b-3xl">
-        <PropertySearchForm />
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
+          <PropertySearchForm />
+        </div>
       </div>
       <section className="px-4 py-6">
         <div className="container-xl lg:container m-auto px-4 py-6">
+          <Link
+            href="/properties"
+            className="text-green-700 hover:underline mb-2 flex items-center gap-1"
+          >
+            <FaArrowAltCircleLeft /> <span>Back to properties</span>
+          </Link>
           <h1 className="text-3xl">Search Results</h1>
           <hr className="my-5" />
           {searchedProperties.length === 0 ? (

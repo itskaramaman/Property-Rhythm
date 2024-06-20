@@ -6,12 +6,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
+  const { data: session } = useSession();
   const [savingBookmark, setSavingBookmark] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const onBookmarkClick = async () => {
     try {
+      if (!session) {
+        toast.info("You need to be logged in to bookmark!");
+        return;
+      }
       setSavingBookmark(true);
       const response = await axios.post(
         `/api/properties/bookmarks/${property._id}`
@@ -35,9 +41,10 @@ const BookmarkButton = ({ property }: { property: PropertyInterface }) => {
       );
       response.data?.bookmarked ? setBookmarked(true) : setBookmarked(false);
     };
-
-    fetchBookmarked();
-  }, [property._id]);
+    if (session) {
+      fetchBookmarked();
+    }
+  }, [property._id, session]);
 
   return (
     <button

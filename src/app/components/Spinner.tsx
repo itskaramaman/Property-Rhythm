@@ -7,7 +7,7 @@ const override = {
   margin: "100px auto",
 };
 
-const Loading = ({ loading }: { loading: boolean }) => {
+const Spinner = ({ loading }: { loading: boolean }) => {
   return (
     <div>
       <ClipLoader
@@ -21,4 +21,4 @@ const Loading = ({ loading }: { loading: boolean }) => {
   );
 };
 
-export default Loading;
+export default Spinner;

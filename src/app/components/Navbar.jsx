@@ -9,6 +9,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import axios from "axios";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [providers, setProviders] = useState(null);
+  const [messageCount, setMessageCount] = useState(0);
 
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -24,6 +26,19 @@ const Navbar = () => {
     };
 
     setAuthProviders();
+
+    const fetchMessageCount = async () => {
+      try {
+        const response = await axios.get("/api/messages/count");
+        if (response.status === 200) {
+          setMessageCount(response.data.count);
+        }
+      } catch (error) {
+        console.log("Could not fetch new messages");
+      }
+    };
+
+    fetchMessageCount();
   }, []);
 
   return (
@@ -127,9 +142,9 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
+                {/* {messageCount && } */}
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                  2
-                  {/* <!-- Replace with the actual number of notifications --> */}
+                  {messageCount}
                 </span>
               </Link>
               {/* <!-- Profile dropdown button --> */}

@@ -26,7 +26,6 @@ const PropertyContactForm = ({ property }: { property: PropertyInterface }) => {
         body,
         property: property._id,
         recipient: property.owner,
-        // @ts-ignore
         sender: session?.user?.id,
       });
       if (response.status === 201) {

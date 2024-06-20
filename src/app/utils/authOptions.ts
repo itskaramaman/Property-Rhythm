@@ -1,6 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import connectDB from "../config/database";
 import User from "../models/User";
+import { Session } from "next-auth";
 
 type Profile = {
   email: string;
@@ -44,11 +45,11 @@ export const authOptions = {
       // return true to allow signin
       return true;
     },
-    async session({ session }) {
+    async session({ session }: { session: Session }) {
       // 1. Connect DB
       await connectDB();
       // 2. Get User from DB
-      const user = await User.findOne({ email: session.user.email });
+      const user = await User.findOne({ email: session?.user?.email });
       // 3. Assign the user id to the session
       session.user.id = user._id.toString();
       // 4. Return session

@@ -38,3 +38,39 @@ export async function PATCH(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await connectDB();
+
+    const { id } = params;
+    const session = await getSessionUser();
+    if (!session) {
+      return NextResponse.json(
+        { message: "User not logged in" },
+        { status: 401 }
+      );
+    }
+
+    const message = await Message.findOne({
+      _id: id,
+      recipient: session.userId,
+    });
+
+    if (!message) {
+      return NextResponse.json(
+        { message: "Message not found" },
+        { status: 404 }
+      );
+    }
+
+    await Message.findByIdAndDelete(id);
+
+    return NextResponse.json({}, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

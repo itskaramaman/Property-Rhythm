@@ -8,24 +8,38 @@ import { useState } from "react";
 
 const Message = ({ message }: { message: MessageInterface }) => {
   const [isRead, setIsRead] = useState(message.read);
+  const [isDeleted, setIsDeleted] = useState(false);
   const onMarkAsReadClick = async () => {
     try {
       const response = await axios.patch(`/api/messages/${message._id}`);
       if (response.status === 200) {
         setIsRead(response.data?.message.read);
       }
-      console.log(isRead);
     } catch (error) {
       toast.error("Could not mark as read!");
     }
   };
+
+  const onMessageDelete = async () => {
+    try {
+      const response = await axios.delete(`/api/messages/${message._id}`);
+      if (response.status === 200) {
+        setIsDeleted(true);
+        toast.success("Message deleted successfully");
+      }
+    } catch (error) {
+      toast.error("Could not delete message");
+    }
+  };
+
+  if (isDeleted) return null;
 
   return (
     <div key={message._id} className="space-y-6 mb-8">
       <div
         className={`${
           !isRead ? "bg-blue-100" : "bg-white"
-        } relative bg-white p-6 rounded-lg shadow-md border border-gray-200`}
+        } relative p-6 rounded-lg shadow-md border border-gray-200`}
       >
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           <span className="font-bold">Property Inquiry:</span>{" "}
@@ -67,7 +81,10 @@ const Message = ({ message }: { message: MessageInterface }) => {
           >
             {isRead ? "Mark as Unread" : "Mark As Read"}
           </button>
-          <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition duration-200">
+          <button
+            onClick={onMessageDelete}
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition duration-200"
+          >
             Delete
           </button>
         </div>

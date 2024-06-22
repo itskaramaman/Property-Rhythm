@@ -5,11 +5,16 @@ import { MessageInterface } from "../utils/interfaces";
 import axios from "axios";
 import Message from "../components/Message";
 import Spinner from "../components/Spinner";
+import { useSession } from "next-auth/react";
 
 const MessagesPage = () => {
   const [messages, setMessages] = useState<MessageInterface[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const { data: session } = useSession();
+
   useEffect(() => {
+    if (!session) return;
     const fetchMessages = async () => {
       const response = await axios.get("/api/messages");
       setMessages(response.data?.messages);
@@ -17,7 +22,7 @@ const MessagesPage = () => {
     };
 
     fetchMessages();
-  }, []);
+  }, [session]);
 
   if (loading) return <Spinner loading={loading} />;
   return (

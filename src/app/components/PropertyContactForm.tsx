@@ -7,6 +7,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { ThreeDots } from "react-loader-spinner";
+import { useGlobalContext } from "../context/GlobalContext";
 
 const PropertyContactForm = ({ property }: { property: PropertyInterface }) => {
   const [name, setName] = useState("");
@@ -14,6 +15,7 @@ const PropertyContactForm = ({ property }: { property: PropertyInterface }) => {
   const [phone, setPhone] = useState("");
   const [body, setBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { setUnreadCount } = useGlobalContext();
 
   const { data: session } = useSession();
 
@@ -32,11 +34,18 @@ const PropertyContactForm = ({ property }: { property: PropertyInterface }) => {
       });
       if (response.status === 201) {
         toast.success("Message Sent");
+        if (property.owner === session?.user?.id) {
+          setUnreadCount((prev) => prev + 1);
+        }
       }
     } catch (error) {
       toast.error("Could not send message");
     } finally {
       setSubmitting(false);
+      setName("");
+      setEmail("");
+      setPhone("");
+      setBody("");
     }
   };
   return (

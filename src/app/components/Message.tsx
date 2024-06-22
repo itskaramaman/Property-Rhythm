@@ -5,15 +5,21 @@ import { MessageInterface } from "../utils/interfaces";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useGlobalContext } from "../context/GlobalContext";
 
 const Message = ({ message }: { message: MessageInterface }) => {
   const [isRead, setIsRead] = useState(message.read);
   const [isDeleted, setIsDeleted] = useState(false);
+  const { setUnreadCount } = useGlobalContext();
+
   const onMarkAsReadClick = async () => {
     try {
       const response = await axios.patch(`/api/messages/${message._id}`);
       if (response.status === 200) {
         setIsRead(response.data?.message.read);
+        response.data?.message.read
+          ? setUnreadCount((prev) => prev - 1)
+          : setUnreadCount((prev) => prev + 1);
       }
     } catch (error) {
       toast.error("Could not mark as read!");

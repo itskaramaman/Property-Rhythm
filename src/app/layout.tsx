@@ -6,6 +6,7 @@ import AuthProvider from "./components/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/Footer";
+import { GlobalProvider } from "./context/GlobalContext";
 
 export const metadata = {
   title: "Property Rhythm | Find the perfect rentals",
@@ -15,16 +16,18 @@ export const metadata = {
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body>
-          <Navbar />
-          <div>{children}</div>
-          <Footer />
-          <ToastContainer />
-        </body>
-      </html>
-    </AuthProvider>
+    <GlobalProvider>
+      <AuthProvider>
+        <html lang="en">
+          <body>
+            <Navbar />
+            <div>{children}</div>
+            <Footer />
+            <ToastContainer />
+          </body>
+        </html>
+      </AuthProvider>
+    </GlobalProvider>
   );
 };
 

@@ -14,9 +14,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const count = await Message.find({ recipient: session.userId })
-      .where({ read: false })
-      .countDocuments();
+    const count = await Message.countDocuments({
+      recipient: session.userId,
+      read: false,
+    });
 
     return NextResponse.json({ count }, { status: 200 });
   } catch (error: any) {

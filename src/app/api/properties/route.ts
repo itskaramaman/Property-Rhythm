@@ -8,9 +8,6 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
-    console.log(request.nextUrl.searchParams);
-    console.log(request.nextUrl.searchParams.get("pageSize"));
-
     const page =
       parseInt(request.nextUrl.searchParams.get("page") as string) || 1;
     const pageSize =

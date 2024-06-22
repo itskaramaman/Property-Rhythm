@@ -31,6 +31,9 @@ const Message = ({ message }: { message: MessageInterface }) => {
       const response = await axios.delete(`/api/messages/${message._id}`);
       if (response.status === 200) {
         setIsDeleted(true);
+        if (!isRead) {
+          setUnreadCount((prev) => prev - 1);
+        }
         toast.success("Message deleted successfully");
       }
     } catch (error) {

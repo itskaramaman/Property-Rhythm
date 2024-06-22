@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Handle images upload to Cloudinary
     const imageUploadPromises = formData.getAll("images").map(async (image) => {
+      // @ts-ignore
       const imageBuffer = await image.arrayBuffer();
       const imageArray = Array.from(new Uint8Array(imageBuffer));
       const imageData = Buffer.from(imageArray);

@@ -1,33 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  FaMapMarker,
+  FaStar,
   FaBed,
   FaBath,
   FaRulerCombined,
-  FaMoneyBill,
-  FaMapMarker,
 } from "react-icons/fa";
+import { PropertyInterface } from "../utils/interfaces";
 
-interface PropertyCardProps {
-  _id: string;
-  name: string;
-  type: string;
-  location: {
-    city: string;
-    state: string;
-  };
-  beds: number;
-  baths: number;
-  square_feet: number;
-  rates: {
-    nightly?: number;
-    weekly?: number;
-    monthly?: number;
-  };
-  images: string[];
-}
-
-const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
+const FeaturedPropertyCard = ({
+  property,
+}: {
+  property: PropertyInterface;
+}) => {
   const getRateDisplay = () => {
     const { rates } = property;
     if (rates.monthly) {
@@ -39,24 +25,23 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
     }
   };
   return (
-    <div className="rounded-xl shadow-md relative">
+    <div className="rounded-xl shadow-md relative md:flex md:justify-between">
       <Image
         src={property.images[0]}
         alt=""
         height={0}
         width={0}
         sizes="100vw"
-        className="w-full h-auto rounded-t-xl"
+        className="w-full md:w-1/2 h-auto rounded-t-xl border-r-8"
       />
-      <div className="p-4">
-        <div className="text-left md:text-center lg:text-left mb-6">
-          <div className="text-gray-600">{property.type}</div>
-          <h3 className="text-xl font-bold">{property.name}</h3>
+      <div className="p-4 flex flex-col justify-between">
+        <div className="text-left md:text-center lg:text-left mb-6 flex justify-between">
+          <div>
+            <div className="text-gray-600">{property.type}</div>
+            <h3 className="text-xl">{property.name}</h3>
+          </div>
+          <FaStar className="text-yellow-300" />
         </div>
-        <h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-green-700 font-bold text-right md:text-center lg:text-right">
-          ${getRateDisplay()}
-        </h3>
-
         <div className="flex justify-center gap-4 text-gray-500 mb-4 text-sm">
           <p>
             <FaBed className="inline mr-1"></FaBed> {property.beds}{" "}
@@ -72,33 +57,8 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
             <span className="md:hidden lg:inline">sqft</span>
           </p>
         </div>
-
-        <div className="flex justify-center gap-4 text-green-900 text-sm mb-4">
-          {property.rates.nightly && (
-            <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
-              {property.rates.nightly} Nightly
-            </p>
-          )}
-
-          {property.rates.weekly && (
-            <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
-              {property.rates.weekly} Weekly
-            </p>
-          )}
-
-          {property.rates.monthly && (
-            <p>
-              <FaMoneyBill className="inline mr-2"></FaMoneyBill>
-              {property.rates.monthly} Monthly
-            </p>
-          )}
-        </div>
-
-        <div className="border border-gray-100 mb-5"></div>
-
-        <div className="flex flex-col lg:flex-row justify-between mb-4">
+        <hr className="my-2" />
+        <div className="flex md:flex-col lg:flex-row justify-between items-center mb-4">
           <div className="flex align-middle gap-2 mb-4 lg:mb-0">
             <FaMapMarker className=" mt-1 fa-solid fa-location-dot text-lg text-rustBrown"></FaMapMarker>
             <span className="text-rustBrown">
@@ -118,4 +78,4 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
   );
 };
 
-export default PropertyCard;
+export default FeaturedPropertyCard;

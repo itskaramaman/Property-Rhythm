@@ -7,10 +7,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { PropertyInterface } from "../utils/interfaces";
 import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
 
 const ProfilePage = () => {
   const { data: session } = useSession();
   const [properties, setProperties] = useState<PropertyInterface[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const profileImage = session?.user?.image;
   const profileName = session?.user?.name;
@@ -20,8 +22,14 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!userId) return;
     async function getProfile() {
-      const response = await axios.get(`/api/profile?userId=${userId}`);
-      setProperties(response?.data?.properties);
+      try {
+        const response = await axios.get(`/api/profile?userId=${userId}`);
+        setProperties(response?.data?.properties);
+      } catch (error: any) {
+        toast.error("Could not load profile");
+      } finally {
+        setLoading(false);
+      }
     }
 
     getProfile();
@@ -43,6 +51,8 @@ const ProfilePage = () => {
       toast.error("Failed to delete property");
     }
   };
+
+  if (loading) return <Spinner loading={true} />;
 
   return (
     <section className={`bg-blue-50`}>

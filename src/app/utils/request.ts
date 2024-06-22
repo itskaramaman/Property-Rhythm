@@ -2,15 +2,17 @@ import axios from "axios";
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
-export async function fetchProperties() {
+export async function fetchProperties(page = 1, pageSize = 9) {
   try {
     // handle the case where domain is not available yet.
-    if (!apiDomain) return [];
-    const res = await axios.get(`${apiDomain}/properties`);
-    return res.data.properties;
+    if (!apiDomain) return { properties: [], total: 0 };
+    const res = await axios.get(
+      `${apiDomain}/properties?page=${page}&pageSize=${pageSize}`
+    );
+    return { properties: res.data.properties, total: res.data.total };
   } catch (error) {
     console.log(error);
-    return [];
+    return { properties: [], total: 0 };
   }
 }
 

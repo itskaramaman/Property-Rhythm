@@ -7,10 +7,26 @@ import cloudinary from "@/app/config/cloudinary";
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-    const properties = await Property.find({}).sort("-createdAt");
+
+    console.log(request.nextUrl.searchParams);
+    console.log(request.nextUrl.searchParams.get("pageSize"));
+
+    const page =
+      parseInt(request.nextUrl.searchParams.get("page") as string) || 1;
+    const pageSize =
+      parseInt(request.nextUrl.searchParams.get("pageSize") as string) || 6;
+
+    const skip = (page - 1) * pageSize;
+
+    const total = await Property.countDocuments();
+    const properties = await Property.find({})
+      .sort("-createdAt")
+      .skip(skip)
+      .limit(pageSize);
     return NextResponse.json(
       {
         properties,
+        total,
       },
       { status: 200 }
     );

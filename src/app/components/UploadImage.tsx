@@ -12,6 +12,7 @@ const UploadImage = () => {
       const { files } = e.target;
       const formData = new FormData();
 
+      // @ts-ignore
       Array.from(files).map((file, index) =>
         formData.append(`file${index}`, file)
       );

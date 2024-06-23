@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Property Rhythm
 
-## Getting Started
+Property Rhythm is a property management application built with Next.js, TypeScript, Tailwind CSS, NextAuth.js, MongoDB, and other modern technologies. It allows users to upload property postings, bookmark listings, and communicate with property managers. Created by: [Karamjeet Singh](https://www.linkedin.com/in/karamjeet-singh-12101995/)
 
-First, run the development server:
+Visit the live demo: [Property Rhythm](https://property-rhythm.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **User Authentication**: Secure authentication powered by NextAuth.js with multiple providers (Google, Facebook, etc.).
+- **Property Postings**: Users can upload property listings with details such as location, price, and amenities.
+- **Bookmark Listings**: Save favorite property listings for quick access.
+- **Messaging**: Communicate directly with property managers or owners regarding listings.
+- **Form Handling**: Efficient form handling with React Hook Form for validation and submission.
+- **Form Validation**: Client-side validation with Zod schema validation for robust input validation.
+- **Social Sharing**: Share property listings via social media using React Share.
+- **Responsive Design**: Fully responsive UI powered by Tailwind CSS for a seamless experience across devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Frontend**:
+  - Next.js: React framework for server-side rendering (SSR) and static site generation (SSG).
+  - TypeScript: Typed JavaScript for enhanced code quality and developer productivity.
+  - Tailwind CSS: Utility-first CSS framework for flexible and responsive designs.
+  - NextAuth.js: Authentication library for easy integration with various OAuth providers and credentials.
+  - React Hook Form: Performant form handling with easy-to-use APIs for validation and submission.
+  - Zod: TypeScript-first schema validation library for consistent and safe form validation.
+  - React Share: React components for sharing content on social platforms.
+- **Backend**:
+  - MongoDB: NoSQL database for storing property data and user information.
+  - Node.js: Backend JavaScript runtime for server-side logic and API integrations.
+- **Deployment**:
+  - Vercel: Serverless deployment platform for Next.js applications with automatic CI/CD.

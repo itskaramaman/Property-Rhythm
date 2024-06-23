@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import logo from "@/app/assets/images/logo-white.png";
 import { FaGoogle } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
@@ -13,6 +14,7 @@ import UnreadMessageCount from "./UnreadMessageCount";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -26,6 +28,12 @@ const Navbar = () => {
 
     setAuthProviders();
   }, []);
+
+  const handleSignout = async () => {
+    setIsProfileMenuOpen(false);
+    await signOut();
+    router.push("/");
+  };
 
   return (
     <nav className="bg-sageGreen border-b">
@@ -194,10 +202,7 @@ const Navbar = () => {
                       role="menuitem"
                       tabIndex="-1"
                       id="user-menu-item-2"
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                        signOut();
-                      }}
+                      onClick={handleSignout}
                     >
                       Sign Out
                     </button>

@@ -6,6 +6,7 @@ import axios from "axios";
 import Message from "../components/Message";
 import Spinner from "../components/Spinner";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const MessagesPage = () => {
   const [messages, setMessages] = useState<MessageInterface[]>([]);
@@ -16,9 +17,14 @@ const MessagesPage = () => {
   useEffect(() => {
     if (!session) return;
     const fetchMessages = async () => {
-      const response = await axios.get("/api/messages");
-      setMessages(response.data?.messages);
-      setLoading(false);
+      try {
+        const response = await axios.get("/api/messages");
+        setMessages(response.data?.messages);
+      } catch (error: any) {
+        console.log("Error while fetching messages");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchMessages();

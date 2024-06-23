@@ -53,6 +53,7 @@ const PropertyEditForm = () => {
         if (response.status === 200) {
           const { property } = response.data;
           for (const key in property) {
+            // @ts-ignore
             setValue(key, property[key]);
           }
         }

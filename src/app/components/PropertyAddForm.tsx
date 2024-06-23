@@ -31,8 +31,9 @@ const PropertyAddForm = () => {
       // Iterate over form data and append each pair
       for (let pair of Object.entries(data)) {
         // If pair is images, handle appending files
-        if (pair[0] === "images") {
+        if (pair[0] === "images" && Array.isArray(pair[1])) {
           for (let i = 0; i < pair[1].length; i++) {
+            // @ts-ignore
             formData.append("images", pair[1][i]); // Append each file individually
           }
         } else {
